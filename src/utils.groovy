@@ -12,20 +12,19 @@ import java.nio.file.Paths
  */
 String[] getEnvironmentTFDirs(String baseDir) {
     // Order to return found modules in, rest will simply
+    def separator = "/"
     final def modulePriority = ["network", "common", "secrets", "eks", "services", "flux"]
     def modules = [] as HashSet
 
     findFiles(glob: baseDir + "/**/*.tf").each {
-        println("Found file: " + it.name + " directory " + it.directory + " path: " + it.path)
         if (!it.directory && (it.name == "_backend.tf" || it.name == "_provider.tf")) {
-            def converted = it.path.split("/")
-            println(converted.length.toString())
+            def converted = it.path.split(separator)
             if (converted.length < 2) {
-                converted = it.path.split("\\\\")
+                separator = "\\"
+                converted = it.path.split("\\" + separator)
             }
 
             if (converted.length > 1) {
-                println("Converted: " + it.path + " to " + converted[-2])
                 modules.add(converted[-2])
             }
         }
@@ -35,7 +34,7 @@ String[] getEnvironmentTFDirs(String baseDir) {
 
     modulePriority.each {
         if (modules.contains(it)) {
-            ret.add(baseDir + File.separator + it)
+            ret.add(baseDir + separator + it)
             modules.remove(it)
         }
     }
@@ -43,7 +42,7 @@ String[] getEnvironmentTFDirs(String baseDir) {
     def rest = modules.toArray().sort()
 
     rest.each {
-        ret.add(baseDir + File.separator + it)
+        ret.add(baseDir + separator + it)
     }
 
     return ret
