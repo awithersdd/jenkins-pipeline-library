@@ -13,16 +13,17 @@ import java.nio.file.Paths
 String[] getEnvironmentTFDirs(String baseDir) {
     // Order to return found modules in, rest will simply
     final def modulePriority = ["network", "common", "secrets", "eks", "services", "flux"]
-    def modules = [] as HashSet;
+    def modules = [] as HashSet
 
     findFiles(glob: baseDir + "/**/*.tf").each {
         println("Found file: " + it.name + " directory " + it.directory + " path: " + it.path)
         if (!it.directory && (it.name == "_backend.tf" || it.name == "_provider.tf")) {
+            println("Converted: " + it.path + " to " + it.path.split('/')[-1])
             modules.add(it.path.split('/')[-1])
         }
     }
 
-    def ret = [];
+    def ret = []
 
     modulePriority.each {
         if (modules.contains(it)) {
@@ -40,4 +41,4 @@ String[] getEnvironmentTFDirs(String baseDir) {
     return ret
 }
 
-// println(getEnvironmentTFDirs("something/terraform/environments/qa"));
+// println(getEnvironmentTFDirs("something/terraform/environments/qa"))
