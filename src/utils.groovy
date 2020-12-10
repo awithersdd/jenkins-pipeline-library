@@ -21,7 +21,7 @@ String[] getEnvironmentTFDirs(String baseDir) {
             def converted = it.path.split('/')
             if (converted.length < 2) {
                 separator = "\\"
-                converted = it.path.split("\\\\")
+                converted = it.path.split('\\')
             }
 
             if (converted.length > 1) {
