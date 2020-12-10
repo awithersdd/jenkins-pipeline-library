@@ -16,6 +16,7 @@ String[] getEnvironmentTFDirs(String baseDir) {
     def modules = [] as HashSet;
 
     findFiles(glob: baseDir + "/**/*.tf").each {
+        println("Found file: " + it.name + " directory " + it.directory + " path: " + it.path)
         if (it.name == "_backend.tf" || it.name == "_provider.tf") {
             modules.add(it.directory)
         }
