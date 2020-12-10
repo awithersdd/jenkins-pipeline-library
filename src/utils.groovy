@@ -3,25 +3,21 @@ import java.nio.file.Paths
 
 
 /**
- * Get modules in a {baseDir}/{envName}
+ * Get modules in a {baseDir}
  *
  * @param baseDir Directory containing environments
- * @param envName Environment name, must be a directory below baseDir
  *
  * returns array of full paths to each module found in the environment, ordered
  *         by priority
  */
-String[] getEnvironmentTFDirs(String baseDir, String envName) {
+String[] getEnvironmentTFDirs(String baseDir) {
     // Order to return found modules in, rest will simply
     final def modulePriority = ["network", "common", "secrets", "eks", "services", "flux"]
     def modules = [] as HashSet;
 
-    def startDir = Paths.get(baseDir, envName)
-    File dir = new File(startDir.toString())
-    dir.eachFileRecurse(FileType.FILES) {
-        file ->
-        if (file.getName() == "_backend.tf" || file.getName() == "_provider.tf") {
-            modules.add(file.getParentFile().getName())
+    findFiles(glob: baseDir + "/**/*.tf").each {
+        if (it.name == "_backend.tf" || it.name == "_provider.tf") {
+            modules.add(it.directory)
         }
     }
 
@@ -29,7 +25,7 @@ String[] getEnvironmentTFDirs(String baseDir, String envName) {
 
     modulePriority.each {
         if (modules.contains(it)) {
-            ret.add(Paths.get(startDir.toString(), it))
+            ret.add(baseDir + File.separator + it)
             modules.remove(it)
         }
     }
@@ -37,10 +33,10 @@ String[] getEnvironmentTFDirs(String baseDir, String envName) {
     def rest = modules.toArray().sort()
 
     rest.each {
-        ret.add(Paths.get(startDir.toString(), it))
+        ret.add(baseDir + File.separator + it)
     }
 
     return ret
 }
 
-// println(getEnvironmentTFDirs("something/terraform/environments", "qa"));
+// println(getEnvironmentTFDirs("something/terraform/environments/qa"));
