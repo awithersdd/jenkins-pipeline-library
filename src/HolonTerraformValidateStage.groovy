@@ -1,5 +1,5 @@
-@Library('terraform-pipeline')
-import TerraformValidateStage;
+// @Library('terraform-pipeline')
+// import TerraformValidateStage;
 
 class HolonTerraformValidateStage extends TerraformValidateStage {
     @Override
