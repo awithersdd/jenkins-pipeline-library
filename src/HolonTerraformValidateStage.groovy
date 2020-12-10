@@ -7,6 +7,11 @@ class HolonTerraformValidateStage extends TerraformValidateStage {
 
     private static globalPlugins = []
 
+    public HolonTerraformValidateStage() {
+       this.jenkinsfile = Jenkinsfile.instance
+       this.decorations = new StageDecorations()
+    }
+
     @Override
     public Closure pipelineConfiguration() {
         applyPlugins()
