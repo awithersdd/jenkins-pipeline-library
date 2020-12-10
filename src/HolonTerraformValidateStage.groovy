@@ -2,6 +2,9 @@
 // import TerraformValidateStage;
 
 class HolonTerraformValidateStage extends TerraformValidateStage {
+    private Jenkinsfile jenkinsfile
+    private StageDecorations decorations
+
     private static globalPlugins = []
 
     @Override
