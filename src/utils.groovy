@@ -17,8 +17,8 @@ String[] getEnvironmentTFDirs(String baseDir) {
 
     findFiles(glob: baseDir + "/**/*.tf").each {
         println("Found file: " + it.name + " directory " + it.directory + " path: " + it.path)
-        if (it.name == "_backend.tf" || it.name == "_provider.tf") {
-            modules.add(it.directory)
+        if (!it.directory && (it.name == "_backend.tf" || it.name == "_provider.tf")) {
+            modules.add(it.path.split('/')[-1])
         }
     }
 
