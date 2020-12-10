@@ -2,6 +2,8 @@
 // import TerraformValidateStage;
 
 class HolonTerraformValidateStage extends TerraformValidateStage {
+    private static globalPlugins = []
+
     @Override
     public Closure pipelineConfiguration() {
         applyPlugins()
