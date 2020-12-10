@@ -3,7 +3,7 @@
 
 class HolonTerraformValidateStage extends TerraformValidateStage {
     @Override
-    private Closure pipelineConfiguration() {
+    public Closure pipelineConfiguration() {
         applyPlugins()
 
         def validateCommand = TerraformValidateCommand.instance()
