@@ -18,13 +18,16 @@ String[] getEnvironmentTFDirs(String baseDir) {
     findFiles(glob: baseDir + "/**/*.tf").each {
         println("Found file: " + it.name + " directory " + it.directory + " path: " + it.path)
         if (!it.directory && (it.name == "_backend.tf" || it.name == "_provider.tf")) {
-            def converted = it.path.split("\\\\")
+            def converted = it.path.split("/")
             println(converted.length.toString())
             if (converted.length < 2) {
-                converted = it.path.split("/")
+                converted = it.path.split("\\\\")
             }
-            println("Converted: " + it.path + " to " + converted[-1])
-            modules.add(converted[-1])
+
+            if (converted.length > 1) {
+                println("Converted: " + it.path + " to " + converted[-2])
+                modules.add(converted[-2])
+            }
         }
     }
 
